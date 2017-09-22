@@ -90,7 +90,7 @@ bool parsePacket(Client *c, byte *buffer)
 }
 
 //read tcp stream for packets
-size_t readNextPacket(Client *c, byte *buffer, size_t size)
+size_t readNextPackets(Client *c, byte *buffer, size_t size)
 {
 	size_t total = size;
 
@@ -153,7 +153,7 @@ void client_routine(LPARAM param)
 		if (bytesReceived > 0)
 		{
 			total += bytesReceived;
-			total = readNextPacket(&c, rcvBuffer, total);
+			total = readNextPackets(&c, rcvBuffer, total);
 			handlePackets(&c);
 		}
 		else
