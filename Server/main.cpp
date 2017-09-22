@@ -2,7 +2,7 @@
 
 int main()
 {
-	Server server(5000);
+	Server server(SERVER_PORT);
 	server.run();
     return 0;
 }

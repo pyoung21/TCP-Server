@@ -22,9 +22,8 @@ int main()
 	writePacket(buffer, sizeof(buffer), &a);
 	writePacket(buffer + 50, sizeof(buffer), &b);
 	writePacket(buffer + 100, sizeof(buffer), &b);
-	writePacket(buffer + 100, sizeof(buffer), &a);
+	writePacket(buffer + 150, sizeof(buffer), &a);
 
-	int count = 0;
 	while (true)
 	{
 		*cnx << a << b << c << b << a << c << a << a;

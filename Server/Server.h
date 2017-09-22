@@ -14,6 +14,7 @@
 extern std::basic_ofstream<wchar_t> logger;
 
 #define MAX_RECV_BUF MTU
+#define SERVER_PORT 5000
 
 class Server
 {
