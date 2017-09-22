@@ -41,18 +41,18 @@ public:
 	explicit Client(int id, int socket, sockaddr_in addr);
 	~Client();
 
-	const int&			getSocket() const { return this->socket; }
-	const int&			getId() const { return this->id; }
-	const sockaddr_in&	getAddr() const { return this->addr; }
-	const uint16_t		getPort() const { return this->addr.sin_port; }
-	const std::string&	getName() const { return this->name; }
-	const bool&			isTrusted() const { return this->trusted; }
-	void				enqueuePacket(const _packet& packet);
+	const int& getSocket() const { return this->socket; }
+	const int& getId() const { return this->id; }
+	const sockaddr_in& getAddr() const { return this->addr; }
+	const uint16_t getPort() const { return this->addr.sin_port; }
+	const std::string& getName() const { return this->name; }
+	const bool& isTrusted() const { return this->trusted; }
+	void enqueuePacket(const _packet& packet);
 	const std::string	getIp() const 
 	{ 
-		char addr[32] = { 0 };
-		inet_ntop(AF_INET, &this->addr.sin_addr.s_addr, &addr[0], sizeof(addr));
-		return (addr);
+		char ipAddr[32] = { 0 };
+		inet_ntop(AF_INET, &this->addr.sin_addr.s_addr, &ipAddr[0], sizeof(ipAddr));
+		return (ipAddr);
 	}
 };
 

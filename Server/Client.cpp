@@ -1,6 +1,6 @@
 #include "Client.h"
 
-static std::mutex gClientMutex;
+extern std::mutex gClientMutex;
 
 Client::~Client()
 {

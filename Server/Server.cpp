@@ -61,7 +61,6 @@ size_t handlePackets(Client *c)
 	if (c->incomingPackets.size() == 0)
 		return 0;
 
-	auto pPackets = &c->incomingPackets;
 	size_t count = 0;
 
 	for (auto &&p : c->incomingPackets)
@@ -80,7 +79,7 @@ bool parsePacket(Client *c, byte *buffer)
 	_header *pHeader = (_header*)(buffer);
 
 	//check for packet integrity (WIP)
-	if (pHeader->checksum != ((pHeader->size + pHeader->opcode) ^ 42))
+	if (pHeader->checksum != (uint32_t)((pHeader->size + pHeader->opcode) ^ 42))
 		return false;
 
 	_packet p = readPacket(buffer);
@@ -90,7 +89,7 @@ bool parsePacket(Client *c, byte *buffer)
 }
 
 //read tcp stream for packets
-size_t readNextPackets(Client *c, byte *buffer, size_t size)
+size_t readNextPacket(Client *c, byte *buffer, size_t size)
 {
 	size_t total = size;
 
@@ -116,7 +115,6 @@ size_t readNextPackets(Client *c, byte *buffer, size_t size)
 
 		_header *pHeader = (_header*)(buffer);
 		size_t packetSize = pHeader->size;
-		uint16_t opcode = pHeader->opcode;
 
 		if (packetSize <= size)
 		{
@@ -144,7 +142,6 @@ void client_routine(LPARAM param)
 
 	int socket = c.socket;
 	size_t total = 0;
-	int count = 0;
 
 	while (c.connected)
 	{
@@ -153,7 +150,7 @@ void client_routine(LPARAM param)
 		if (bytesReceived > 0)
 		{
 			total += bytesReceived;
-			total = readNextPackets(&c, rcvBuffer, total);
+			total = readNextPacket(&c, rcvBuffer, total);
 			handlePackets(&c);
 		}
 		else
@@ -204,12 +201,12 @@ void Server::addClient(const Client client)
 	}
 }
 
-void Server::removeClient(int id)
+void Server::removeClient(int clientId)
 {
 	std::lock_guard<std::mutex> mutex(gMutex);
 	clients.erase(std::remove_if(clients.begin(), clients.end(), [&](const Client& c)
 	{
-		return c.id == id;
+		return c.id == clientId;
 	}), clients.end());
 }
 
@@ -268,8 +265,6 @@ bool Server::init(short port)
 
 void Server::run()
 {
-	sockaddr_in cAddr;
-	int addlen = sizeof(cAddr);
 	this->running = true;
 
 	//listen for new connections
