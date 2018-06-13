@@ -36,11 +36,6 @@ struct _packet
 	std::vector<byte> data; //variable length payload
 };
 
-/*
-**	Functions used to push values into a packet's data.
-**	The size of a packet and its checksum 
-**	must be recalculated after modifying the data.
-*/
 void writeShort(_packet *packet, short val);
 void writeInt32(_packet *packet, int val);
 void writeString(_packet *packet, const char* val);
