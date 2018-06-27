@@ -305,7 +305,7 @@ bool Server::executeCommand(std::vector<std::string>& args)
 	{
 		std::cout << "\nClients connected:\t" << clients.size() << "\n\n";
 
-		for (auto &&c : clients)
+		for (auto &c : clients)
 		{
 			std::cout << c << "\n";
 		}
